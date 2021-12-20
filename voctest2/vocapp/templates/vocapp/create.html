@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+
+   <div class="main-container" style="text-align: center;  margin:4rem auto">
+       <form action="{% url 'vocapp:create'%}" method="post">
+            {% csrf_token %}
+        <div>
+        <input type="hidden"  value="{{ request.GET.category_id }}" name="category_num"   style="display:inline-block" class="form-control" >
+        <input type="hidden" name='voc_date' id="currentDatetime" style="display:inline-block" class="form-control" >
+        <label style="margin:1rem 4rem">인입날짜:<input type="text" name='voc_date' id="currentDatetime2" style="display:inline-block width:80%" class="form-control" ></label>
+        <label style="margin:1rem 9rem" >인입방법:
+            <label><input type="radio" class="input_check"  name="voc_method" value="Call" checked="checked" > Call</label>
+            <label><input type="radio" class="input_check"  name="voc_method" value="Web"> Web </label>
+        </label>
+        </div>
+
+        <div >
+          <label style="margin:1rem 1rem" >회원번호:{{ form.client_number }} </label>
+          <label style="margin:1rem 1rem">회원명: {{ form.client_name }} </label>
+              </div>
+
+           <div>
+            <label style="margin:1rem 1rem" >문의번호: {{ form.voc_number }} </label>
+           <label  style="margin:1rem 1rem">문의제목: {{ form.voc_title }}</label>
+           </div>
+          <label style="margin:1rem "  >문의내용: {{ form.voc_content }}</label>
+          <label style="margin:1rem " >대응내역: {{ form.voc_comment }} </label>
+           <div>
+     </div>
+    <div>
+    <label style="margin:1rem 1rem"> 장애보고서 :
+    <label><input type="radio" class="input_check" id="radioButton" name="report" value="O" checked="checked" > O </label>
+    <label><input type="radio" class="input_check" id="radioButton2" name="report" value="X"> X </label>
+    </label>
+    <label style="margin:1rem 2rem" > 담당자:{{ form.voc_manger }}</label>
+    <label style="margin:1rem 2rem"> 파트너사: {{ form.partner }}</label>
+
+    </div>
+
+    <input type="submit" class="btn btn-dark rounded-pill col-3" style=" margin:1rem auto" value ="입력">
+     </form>
+    </div>
+ <script type="text/javascript" >
+    $(document).ready(function(){
+
+      let offset = new Date().getTimezoneOffset() * 60000;
+      let today = new Date(Date.now() - offset);
+
+      var dateControl = document.getElementById('currentDatetime');
+      dateControl.value = today.toISOString().substring(0, 16).replace(/T/g," ");
+      $('#currentDatetime2').val(dateControl.value);
+      var radioVal = $('input[name="radioValue"]:checked').val();
+        });
+
+
+
+     </script>
+{% endblock %}

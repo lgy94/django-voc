@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    <div style="text-align:center; max-width: 500px; margin:4rem auto;">
+    <p>
+        {% if categorylist %}
+            {% for list in categorylist %}
+            <a href="{% url 'vocapp:list' pk=list.pk %}">
+            <div>
+            {{ list.id}}.
+            {{ list.created_at | date:'Y/m/d'}}
+            [{{ list.service_name}}]
+
+            </div>
+            </a>
+            {% endfor %}
+        {% else %}
+        <div>
+            등록 된 내용이 없습니다. 카테고리를 만들어주세요
+        </div>
+         <div style="text-align : center">
+
+        </div>
+        {% endif %}
+        <div style="margin:3rem auto">
+            <a href="{% url 'categoryapp:create' %}" class="btn btn-dark rounded-pill col=3 mt-3 mb-3">
+                카테고리 만들기
+            </a>
+
+        </div>
+
+
+    </p>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+   <div class="main-container" style="text-align: center;  margin:4rem auto">
+       <form action="{% url 'categoryapp:create' %}" method="post">
+            {% csrf_token %}
+        <div>
+        <label> 장애유형: {{form.service_name}}</label>
+        </div>
+
+           {% for category in categorylist %}
+           {{ category }}
+           {% endfor %}
+
+    <input type="submit" class="btn btn-dark rounded-pill col-3" style=" margin:1rem auto">
+     </form>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+
+   <div class="main-container" style="text-align: center;  margin:4rem auto">
+       <form action="{% url 'vocapp:update' pk=voclist.voc_no %}" method="post">
+            {% csrf_token %}
+        <div>
+
+        <input type="hidden"  value="{{ request.GET.category_id }}" name="category_num"   style="display:inline-block" class="form-control" >
+        <input type="hidden" name='category_no' id="currentDatetime" style="display:inline-block" class="form-control" >
+        <label>인입날짜:{{ form.voc_date }}
+        </label>
+
+        <label style="margin:1rem .5rem" >인입방법:
+        <label><input type="radio" class="input_check"  name="voc_method" value="Call" checked="checked" > Call</label>
+        <label><input type="radio" class="input_check"  name="voc_method" value="Web"> Web </label>
+        </label>
+        </div>
+        <div style="margin:1rem auto">
+          <label>회원번호:{{ form.client_number }} </label>
+          <label>회원명: {{ form.client_name }} </label>
+              </div>
+
+           <div>
+            <label>문의번호: {{ form.voc_number }} </label>
+               <label>문의제목: {{ form.voc_title }}</label>
+           </div>
+          <label style="margin:1rem auto" >문의내용: {{ form.voc_content }}</label>
+            <label>대응내역: {{ form.voc_comment }} </label>
+           <div>
+
+
+     </div>
+    <div>
+    <label style="margin:1rem 1rem"> 장애보고서 :
+    <label><input type="radio" class="input_check" id="radioButton" name="report" value="O" checked="checked" > O </label>
+    <label><input type="radio" class="input_check" id="radioButton2" name="report" value="X"> X </label>
+    </label>
+      <label>담당자:{{ form.voc_manger }}</label>
+    <label> 파트너사: {{ form.partner }}</label>
+    <label style="color:red;">절대 수정하지마시오:{{form.category_num}}</label>
+
+    </div>
+    <input type="submit" class="btn btn-dark rounded-pill col-3" style=" margin:1rem auto" value='수정하기'>
+     </form>
+    </div>
+{% endblock %}

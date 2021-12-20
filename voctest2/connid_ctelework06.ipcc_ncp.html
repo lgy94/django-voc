@@ -1,0 +1,169 @@
+<html>
+
+<script type="text/javascript" src="https://ctelework06.ipcc/agentdesktop/libs/servicepattern-sdk-v1.js"></script>
+ 
+ <!--<iframe id="repeater" style="position:absolute; right: 8px; width: 30%; height: 98%;" src="https://ctelework06.ipcc/agentdesktop/UniversalRepeater.jsp"></iframe>-->
+ 
+<body bgcolor="#4B85A0">
+<div align="right"><font color="#FFFFFF">&nbsp;&nbsp;get connid of AgentDesktop </font> </div>
+ <div id="log"></div>
+ <div id="log2">
+ <table class="type01">
+     <tr>
+        <th width="155px" scope="cols">time</th>
+        <th width="155px" scope="cols">phone_number</th>
+        <th  width="450px" scope="cols">connid</th>
+	  </tr>
+</table>
+ </div>
+ 
+ </body>
+ 
+ <style>
+
+table.type01 {
+    border-collapse: separate;
+    border-spacing: 1px;
+    text-align: center;
+    line-height: 1.5;
+    margin: 20px 10px;
+}
+table.type01 th {
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    color: #000000;
+    background: #eee ;
+}
+table.type01 td {
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+    background: #ffffff;
+}
+   
+ </style>
+ 
+ <script type="text/javascript">
+ 
+
+ let today = new Date();  
+ var global_id = "";
+ var phone_number = "";
+ var screenpop_data = "";
+ var call_type = "";
+ var input_id = 0;
+  window.bpspat.api.init("https://ctelework06.ipcc");
+ 
+ // # table태그, tbody태그 취득 
+ const table = document.querySelector('table'); 
+ const tbody = document.querySelector('tbody');
+
+ 
+
+
+
+function leadingZeros(n, digits) {
+  var zero = '';
+  n = n.toString();
+
+  if (n.length < digits) {
+    for (i = 0; i < digits - n.length; i++)
+      zero += '0';
+  }
+  return zero + n;
+}
+
+ function log(data) {
+ let div = document.createElement("div");
+ now = new Date();
+ now_ymdt = 
+    leadingZeros(now.getFullYear(), 4) + '-' +
+    leadingZeros(now.getMonth() + 1, 2) + '-' +
+    leadingZeros(now.getDate(), 2) + ' ' +
+    leadingZeros(now.getHours(), 2) + ':' +
+    leadingZeros(now.getMinutes(), 2) + ':' +
+    leadingZeros(now.getSeconds(), 2);
+
+ now_time =  leadingZeros(now.getHours(), 2)+leadingZeros(now.getMinutes(), 2);
+ 
+ //div.innerHTML = now_ymdt+' '+JSON.stringify(data);
+
+ document.getElementById("log").appendChild(div);
+ 
+ let temp     = JSON.stringify(data);
+ let pasdata  = JSON.parse(temp);	
+
+  //INTERACTION_RENDERED (ringing)  
+ if(pasdata.command == "INTERACTION_RENDERED") {
+		      //global_id 초기화
+			 			  
+			  
+	global_id = "";
+	phone_number = "";		  
+	screenpop_data = "";
+	
+	global_id =  pasdata.data.global_id;
+		      
+		      
+	phone_number =  pasdata.data.phone_number;
+	
+	
+	if(phone_number.substring(0,1) == '9'){
+	   call_type = "Outbound";
+	} else {
+	   call_type = "Inbound";	
+	}
+	
+	
+	input_id = input_id +1;
+	
+	
+	// 1-1. 행 생성 const 
+ tr_01 = document.createElement('tr'); 
+ // 1-2. 셀 생성 및 텍스트 설정 
+ const td_01 = document.createElement('td'); 
+ td_01.textContent = now_ymdt; 
+  const td_02 = document.createElement('td'); 
+  td_02.textContent = phone_number 
+   const td_03 = document.createElement('td'); 
+  td_03.textContent = global_id;   
+  td_03.innerHTML = "<input  id='myInput"+ input_id +"' size='40' style='border: 0;font-size:15px;' value='"+global_id+"'>   <button onclick='copy_to_clipboard("+input_id+");'>copy</button>" ;
+
+
+  //const newP = document.createElement('p');
+  //newP.innerHTML = "<input  id='myInput'  value='"+global_id+"'>" 
+  
+
+	// 1-3. 행의 자식요소로 셀 추가 
+	tr_01.appendChild(td_01); 
+	tr_01.appendChild(td_02);	
+	tr_01.appendChild(td_03);
+	
+// 1-4. 테이블에 행 추가 
+tbody.appendChild(tr_01);
+
+
+		      //alert("global_id : "+global_id+"phone_number :"+phone_number);	  
+			  
+    //screenpop_data = pasdata.data.screenpop_data.web.type;
+	//	      alert("screenpop_data : "+screenpop_data);		
+  } 		 
+		 
+   
+
+ }
+             window.bpspat.api.addInteractionRenderedHandler(log);
+             
+ function copy_to_clipboard(input_id){
+ 
+   var copyText = document.getElementById("myInput"+input_id);
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  document.execCommand("Copy");
+  //alert('복사되었습니다!');
+ }
+ 
+ </script>
+ 
+ </html>

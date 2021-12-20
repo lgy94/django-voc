@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div style="height: 40rem; background-color:#38df81; border-radius:1rem; margin: 2rem;">
+
+        <form action="{% url 'vocapp:create' %}" method="post">
+            {% csrf_token %}
+
+
+        <div style=" text-align: center;" >
+        <input type="submit" class="btn btn-dark rounded-pill col-3" style=" margin:1rem auto;" value="임시페이지입니다. 상단 HOME을 눌러주세요">
+        </div>
+
+        </form>
+
+    </div>
+{% endblock%}

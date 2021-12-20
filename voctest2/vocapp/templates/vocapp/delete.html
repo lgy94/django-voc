@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+   <div class="main-container" style="text-align: center;  margin:4rem auto">
+       <form action="{% url 'vocapp:delete' pk=voclist.voc_no %}" method="post">
+            {% csrf_token %}
+        <div>
+        <input type="hidden" name='category_no' id="currentDatetime" style="display:inline-block" class="form-control" >
+        <label>인입날짜:{{ voclist.voc_date }}</label>
+        <label style="margin:1rem .5rem" >인입방법:
+        <label><input type="radio" class="input_check"  name="voc_method" value="Call" checked="checked" > Call</label>
+        <label><input type="radio" class="input_check"  name="voc_method" value="Web"> Web </label>
+        </label>
+        </div>
+        <div style="margin:1rem auto">
+          <label>회원번호:{{ voclist.client_number }} </label>
+          <label>회원명: {{ voclist.client_name }} </label>
+              </div>
+
+           <div>
+            <label>문의번호: {{ voclist.voc_number }} </label>
+               <label>문의제목: {{ voclist.voc_title }}</label>
+           </div>
+          <label style="margin:1rem auto" >문의내용: {{ voclist.voc_content }}</label>
+           <div>
+        <label>1차대응내역: {{ voclist.voc_comment }} </label>
+      <label>1차담당자:{{ voclist.voc_manger }}</label>
+     </div>
+    <div>
+    <label style="margin:1rem 1rem"> 장애보고서 :
+    <label><input type="radio" class="input_check" id="radioButton" name="report" value="O" checked="checked" > O </label>
+    <label><input type="radio" class="input_check" id="radioButton2" name="report" value="X"> X </label>
+    </label>
+    <label> 파트너사: {{ voclist.partner }}</label>
+    </div>
+
+    <input type="submit" class="btn btn-danger rounded-pill col-3" style=" margin:1rem auto" value="삭제">
+     </form>
+    </div>
+{% endblock %}
+

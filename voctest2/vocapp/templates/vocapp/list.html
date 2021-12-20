@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    #inputClient {
+      float: right;
+      margin: 10px;
+    }
+      #excelDownolad {
+      float: right;
+      margin: 10px;
+
+      #myTable{
+        font-size : small;
+      }
+    }
+</style>
+<div class="container" style= width:4000px  >
+    <form method="POST" class="post-form" id="indexDate" action="{% url 'vocapp:test'  %}">{% csrf_token %}
+        <button type="submit" class="btn btn-primary " id ="excelDownolad" value="Click me" style="text-align:right; margin:1rem auto;">  Excel </button>
+        <input type="hidden"  value="{{view.kwargs.pk}}" name="category_num"   style="display:inline-block" class="form-control" >
+
+     </form>
+    <!-- <button type="button" class="btn btn-primary" id =inputClient  value="{{ request.GET.category_id }}" name="category_id" onclick="window.open('http://127.0.0.1:8000/voc/create','window_name','width=600,height=900,location=no,status=no,scrollbars=yes');"> 내용추가 </button>
+-->
+    <form action="{% url 'vocapp:create' %}?category_id={{view.kwargs.pk}}" name="category_id" method="post">{% csrf_token %}
+        <div style=" text-align: right;" >
+        <input type="submit" class="btn btn-dark" style=" margin:1rem 2rem;" value="작성하기" >
+    </div>
+
+    </form>
+    <form action="" method="get">
+    <input type="hidden"  value="{{view.kwargs.pk}}" name="category_num"  id = "category_id"  style="display:inline-block" class="form-control" >
+
+    <table class="table table-condensed"  id="myTable" style = font-size : x-small;>
+          <thead>
+            <tr >
+              <th>인입시간 </th>
+              <th>인입방법</th>
+              <th>회원번호</th>
+              <th>회원명</th>
+              <th>문서번호</th>
+              <th>제목</th>
+           <!--  <th>내용</th>
+              <th>대응내역</th>-->
+              <th>담당자</th>
+              <th>장애보고서</th>
+              <th>파트너사</th>
+            </tr>
+          </thead>
+          <tbody class="panel">
+
+            {% for list in voclist %}
+
+          <tr data-toggle="collapse" data-target="#demo{{list.voc_no}}" data-parent="#myTable" style = font-size : x-small; >
+            <td><a href="{% url 'vocapp:update' pk=list.voc_no %}">{{ list.voc_date }}</a></td>
+            <td>{{ list.voc_method }}</td>
+            <td>{{ list.client_number }}</td>
+            <td>{{ list.client_name }}</td>
+            <td>{{ list.voc_number }}</td>
+            <td>{{ list.voc_title }}</td>
+            <!--
+            <td >
+            <div  >{{ list.voc_content }}</div>
+            </td>
+            -->
+            <!-- <td>{{ list.voc_comment }}</td> -->
+            <td>{{ list.voc_manger }}</td>
+            <td>{{ list.report }}</td>
+            <td>{{ list.partner }}</td>
+          </tr>
+          <tr id="demo{{list.voc_no}}" class="collapse" >
+            <td colspan="10" class="hiddenRow"><div><p> 문의내용:</p><br> <p>{{ list.voc_content }}</p><p> 문의답변:</p><br> <p>{{ list.voc_comment }}</p></div> </td>
+
+          </tr>
+          <tr id="demo{{list.voc_no}}" class="collapse" >
+            <td colspan="10" class="hiddenRow"><div><p> 문의답변:</p><br> <p>{{ list.voc_comment }}</p></div> </td>
+          </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+</form>
+      </div>
+
+    <script type="text/javascript" >
+
+        $(document).ready(function(){
+        var category_id = $('#category_id').val();
+        console.log(category_id)
+         });
+
+     </script>
+{% endblock%}
